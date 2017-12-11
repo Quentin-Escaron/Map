@@ -1,5 +1,5 @@
 class Station {
-    constructor (name, coordinates, map) {
+    constructor (name, coordinates, stations, map) {
         this._name = name;
         this._coordinates = L.GeoJSON.coordsToLatLng(coordinates);
         stations.push(this);
