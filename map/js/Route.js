@@ -13,7 +13,7 @@ class Route {
             //open the popups of the stations
             station1.marker.openPopup();
             station2.marker.openPopup();
-            document.getElementById("info-div").innerHTML ='<p>Nom : '+this._name+'<br/>Prix : ';
+            document.getElementById("info-div").innerHTML ='<p>Nom : '+name+'<br/>Prix : ';
         });
         routes.push(this);
     }

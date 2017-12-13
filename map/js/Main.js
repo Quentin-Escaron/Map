@@ -79,6 +79,11 @@ const route2 = new Route('Line 1', routes, styleCocody, stationBlockhauss, stati
         ].map(function(coordinate){return L.GeoJSON.coordsToLatLng(coordinate)}), mymap);
 
 
+mymap.on('click', function(e){
+	console.log(e.target);
+});
+
+
 
 /*
     {
