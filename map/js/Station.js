@@ -1,10 +1,10 @@
 class Station {
-    constructor (name, coordinates, stations, map) {
+    constructor (name, coordinates, stations, map, layer) {
         this._name = name;
         this._coordinates = L.GeoJSON.coordsToLatLng(coordinates);
         stations.push(this);
         this.marker = L.marker(this.coordinates).bindPopup('station '+name, {closeOnClick: true, autoClose: false});
-        this.marker.addTo(map);
+        this.marker.addTo(layer);
     }
     
     get name() {

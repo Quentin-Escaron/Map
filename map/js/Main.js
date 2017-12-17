@@ -38,17 +38,26 @@ const styleSharedSelected = {
     "opacity": 1
 };
 
+//Setting the control layer
+var controlLayers = L.control.layers().addTo(mymap);
+
 //Creates the station list and instantiates the Stations
 let stations = [];
 
-const stationDeuxPlateaux = new Station("Deux Plateaux", [-3.9982187747955322, 5.368422614699433], stations, mymap);
-const stationSaintJean = new Station("Saint Jean", [-4.0039801597595215, 5.336034611566841], stations, mymap);
-const stationBlockhauss = new Station("Blockhauss", [-4.001389145851135, 5.325987787020237], stations, mymap);
-const stationGareBassam = new Station("Gare de Bassam", [-4.0024325251579285, 5.2985891933204305], stations, mymap);
+const geoStations = L.layerGroup();
+
+const stationDeuxPlateaux = new Station("Deux Plateaux", [-3.9982187747955322, 5.368422614699433], stations, mymap, geoStations);
+const stationSaintJean = new Station("Saint Jean", [-4.0039801597595215, 5.336034611566841], stations, mymap, geoStations);
+const stationBlockhauss = new Station("Blockhauss", [-4.001389145851135, 5.325987787020237], stations, mymap, geoStations);
+const stationGareBassam = new Station("Gare de Bassam", [-4.0024325251579285, 5.2985891933204305], stations, mymap, geoStations);
+
+controlLayers.addOverlay(geoStations, 'Gares');
+mymap.addLayer(geoStations);
+
 
 
 //instantiates the routes
-const routes = [
+const routesCocody = [
     {
         "type": "LineString",
         "properties": {
@@ -126,7 +135,10 @@ const routes = [
         	[-4.2, 5.3],
         	[-4.2, 5.2]
         ]
-    },
+    }
+];
+
+const routesShared = [
     {
         "type": "LineString",
         "properties": {
@@ -230,11 +242,19 @@ const routes = [
 ];
 
 //changes GeoJSON coords into LatLng
-routes.map(function(route){
+routesCocody.map(function(route){
     route.coordinates.map(function(coordinate){
         return L.GeoJSON.coordsToLatLng(coordinate);
     });
 });
+//changes GeoJSON coords into LatLng
+routesShared.map(function(route){
+    route.coordinates.map(function(coordinate){
+        return L.GeoJSON.coordsToLatLng(coordinate);
+    });
+});
+
+
 
 //initializing variable allowing deselection when click on map
 let clickOK = false;
@@ -289,13 +309,22 @@ function onRouteClic(event, route, layer) {
     infoDiv.innerHTML ='<p>Nom : '+route.properties.name+'<br/>Prix : ';
 }
 
+
 //adding style to routes, calling initialize on each feature and adding to the map
-L.geoJSON(routes, {
+let geoRoutesCocody = L.geoJSON(routesCocody, {
     style: function(route) {
         return route.geometry.properties.style;
     },
     onEachFeature: onInitialization
 }).addTo(mymap);
+controlLayers.addOverlay(geoRoutesCocody, 'Cocody');
+let geoRoutesShared = L.geoJSON(routesShared, {
+    style: function(route) {
+        return route.geometry.properties.style;
+    },
+    onEachFeature: onInitialization
+}).addTo(mymap);
+controlLayers.addOverlay(geoRoutesShared, 'Partagés');
 
 
 
